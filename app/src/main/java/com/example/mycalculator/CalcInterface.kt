@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,6 +30,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.toColor
+import java.lang.Appendable
+import java.sql.Types.NULL
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,26 +40,28 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun CalcInterface() {
     var textFieldValue by remember { mutableStateOf("") }
+    val appleOrange = colorResource(id = R.color.orange)
 
         Column(modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(Color.DarkGray)
+            .background(Color.Black)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.DarkGray)
-                    .height(150.dp)
+                    .background(Color.Black)
+                    .height(190.dp)
                     .clickable{}
             )
             Text(
                 text = textFieldValue,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 style = TextStyle(
-                    fontSize = 32.sp,
+                    fontSize = 45.sp,
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Right
+                    textAlign = TextAlign.Right,
+                    color = Color.White
                 )
             )
 
@@ -70,19 +76,20 @@ fun CalcInterface() {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     // AC Button
-                    Button(text = "AC", Color.Yellow) {
+                    Button(text = "AC", Color.Gray) {
                         textFieldValue = ""
                     }
                     // C Button
-                    Button(text = "C", Color.Yellow) {
+                    Button(text = "C", Color.Gray) {
                         textFieldValue = textFieldValue.reversed().drop(1).reversed()
                     }
                     // Divide Button
-                    Button(text = "%", Color.Yellow) {
+
+                    Button(text = "%", Color.Gray) {
                         textFieldValue += "%"
                     }
                     // Multiply Button
-                    Button(text = "/", Color.Yellow) {
+                    Button(text = "/", appleOrange) {
                         textFieldValue += "/"
                     }
                 }
@@ -94,16 +101,16 @@ fun CalcInterface() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         // Number Buttons: 7, 8, 9
-                        Button(text = "7", Color.Yellow) {
+                        Button(text = "7", Color.DarkGray) {
                             textFieldValue += "7"
                         }
-                        Button(text = "8", Color.Yellow) {
+                        Button(text = "8", Color.DarkGray) {
                             textFieldValue += "8"
                         }
-                        Button(text = "9", Color.Yellow) {
+                        Button(text = "9", Color.DarkGray) {
                             textFieldValue += "9"
                         }
-                        Button(text = "X", Color.Yellow) {
+                        Button(text = "X", appleOrange) {
                             textFieldValue += "X"
                         }
                     }
@@ -112,16 +119,16 @@ fun CalcInterface() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         // Number Buttons: 4, 5, 6
-                        Button(text = "4", Color.Yellow) {
+                        Button(text = "4", Color.DarkGray) {
                             textFieldValue += "4"
                         }
-                        Button(text = "5", Color.Yellow) {
+                        Button(text = "5", Color.DarkGray) {
                             textFieldValue += "5"
                         }
-                        Button(text = "6", Color.Yellow) {
+                        Button(text = "6", Color.DarkGray) {
                             textFieldValue += "6"
                         }
-                        Button(text = "-", Color.Yellow) {
+                        Button(text = "-", appleOrange) {
                             textFieldValue += "-"
                         }
                     }
@@ -130,16 +137,16 @@ fun CalcInterface() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         // Number Buttons: 1, 2, 3
-                        Button(text = "1", Color.Yellow) {
+                        Button(text = "1", Color.DarkGray) {
                             textFieldValue += "1"
                         }
-                        Button(text = "2", Color.Yellow) {
+                        Button(text = "2", Color.DarkGray) {
                             textFieldValue += "2"
                         }
-                        Button(text = "3", Color.Yellow) {
+                        Button(text = "3", Color.DarkGray) {
                             textFieldValue += "3"
                         }
-                        Button(text = "+", Color.Yellow) {
+                        Button(text = "+", appleOrange) {
                             textFieldValue += "+"
                         }
                     }
@@ -148,16 +155,82 @@ fun CalcInterface() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         // Number Button: 0
-                        Button(text = "bl", Color.Yellow) {
+                        Button(text = "()", Color.DarkGray) {
+                            textFieldValue += "()"
+                        }
+                        Button(text = "0", Color.DarkGray) {
                             textFieldValue += "0"
                         }
-                        Button(text = "0", Color.Yellow) {
-                            textFieldValue += "0"
-                        }
-                        Button(text = ".", Color.Yellow) {
+                        Button(text = ".", Color.DarkGray) {
                             textFieldValue += "."
                         }
-                        Button(text = "=", Color.White) {
+                        Button(text = "=", appleOrange) {
+                            var num1: String? = null
+                            var num2: String? = null
+                            var i = 0
+
+                            if (textFieldValue.contains("+")) {
+                                while (textFieldValue[i] != '+') {
+                                    num1 = (num1 ?: "") + textFieldValue[i]
+                                    i++
+                                }
+                                i++
+                                while (i < textFieldValue.length) {
+                                    num2 = (num2 ?: "") + textFieldValue[i]
+                                    i++
+                                }
+                                textFieldValue = ""
+
+                                val result = (num1?.toDoubleOrNull() ?: 0.0) + (num2?.toDoubleOrNull() ?: 0.0)
+                                textFieldValue += result.toString()
+                            }
+
+                            if (textFieldValue.contains("X")) {
+                                while (textFieldValue[i] != 'X') {
+                                    num1 = (num1 ?: "") + textFieldValue[i]
+                                    i++
+                                }
+                                i++
+                                while (i < textFieldValue.length) {
+                                    num2 = (num2 ?: "") + textFieldValue[i]
+                                    i++
+                                }
+                                textFieldValue = ""
+
+                                val result = (num1?.toDoubleOrNull() ?: 0.0) * (num2?.toDoubleOrNull() ?: 0.0)
+                                textFieldValue += result.toString()
+                            }
+
+                            if (textFieldValue.contains("-")) {
+                                while (textFieldValue[i] != '-') {
+                                    num1 = (num1 ?: "") + textFieldValue[i]
+                                    i++
+                                }
+                                i++
+                                while (i < textFieldValue.length) {
+                                    num2 = (num2 ?: "") + textFieldValue[i]
+                                    i++
+                                }
+                                textFieldValue = ""
+
+                                val result = (num1?.toDoubleOrNull() ?: 0.0)-(num2?.toDoubleOrNull() ?: 0.0)
+                                textFieldValue += result.toString()
+                            }
+                            if (textFieldValue.contains("/")) {
+                                while (textFieldValue[i] != '/') {
+                                    num1 = (num1 ?: "") + textFieldValue[i]
+                                    i++
+                                }
+                                i++
+                                while (i < textFieldValue.length) {
+                                    num2 = (num2 ?: "") + textFieldValue[i]
+                                    i++
+                                }
+                                textFieldValue = ""
+
+                                val result = (num1?.toDoubleOrNull() ?: 0.0)/ (num2?.toDoubleOrNull() ?: 0.0)
+                                textFieldValue += result.toString()
+                            }
 
                         }
                     }
@@ -184,6 +257,7 @@ fun Button(text: String, color: Color, onClick: () -> Unit) {
 
         Text(
             text = text,
+            color = Color.White,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold
         )
