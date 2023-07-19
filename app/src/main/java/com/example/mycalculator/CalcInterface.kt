@@ -1,0 +1,191 @@
+package com.example.mycalculator
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun CalcInterface() {
+    var textFieldValue by remember { mutableStateOf("") }
+
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(Color.DarkGray)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.DarkGray)
+                    .height(150.dp)
+                    .clickable{}
+            )
+            Text(
+                text = textFieldValue,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                style = TextStyle(
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Right
+                )
+            )
+
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    // AC Button
+                    Button(text = "AC", Color.Yellow) {
+                        textFieldValue = ""
+                    }
+                    // C Button
+                    Button(text = "C", Color.Yellow) {
+                        textFieldValue = textFieldValue.reversed().drop(1).reversed()
+                    }
+                    // Divide Button
+                    Button(text = "%", Color.Yellow) {
+                        textFieldValue += "%"
+                    }
+                    // Multiply Button
+                    Button(text = "/", Color.Yellow) {
+                        textFieldValue += "/"
+                    }
+                }
+
+                // Number Buttons
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Number Buttons: 7, 8, 9
+                        Button(text = "7", Color.Yellow) {
+                            textFieldValue += "7"
+                        }
+                        Button(text = "8", Color.Yellow) {
+                            textFieldValue += "8"
+                        }
+                        Button(text = "9", Color.Yellow) {
+                            textFieldValue += "9"
+                        }
+                        Button(text = "X", Color.Yellow) {
+                            textFieldValue += "X"
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Number Buttons: 4, 5, 6
+                        Button(text = "4", Color.Yellow) {
+                            textFieldValue += "4"
+                        }
+                        Button(text = "5", Color.Yellow) {
+                            textFieldValue += "5"
+                        }
+                        Button(text = "6", Color.Yellow) {
+                            textFieldValue += "6"
+                        }
+                        Button(text = "-", Color.Yellow) {
+                            textFieldValue += "-"
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Number Buttons: 1, 2, 3
+                        Button(text = "1", Color.Yellow) {
+                            textFieldValue += "1"
+                        }
+                        Button(text = "2", Color.Yellow) {
+                            textFieldValue += "2"
+                        }
+                        Button(text = "3", Color.Yellow) {
+                            textFieldValue += "3"
+                        }
+                        Button(text = "+", Color.Yellow) {
+                            textFieldValue += "+"
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Number Button: 0
+                        Button(text = "bl", Color.Yellow) {
+                            textFieldValue += "0"
+                        }
+                        Button(text = "0", Color.Yellow) {
+                            textFieldValue += "0"
+                        }
+                        Button(text = ".", Color.Yellow) {
+                            textFieldValue += "."
+                        }
+                        Button(text = "=", Color.White) {
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+@Composable
+fun Button(text: String, color: Color, onClick: () -> Unit) {
+
+    Box(
+        modifier = Modifier
+            .width(80.dp)
+            .height(80.dp)
+            .padding(5.dp)
+            .clip(RoundedCornerShape(15.dp))
+            .background(color)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+
+        Text(
+            text = text,
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
